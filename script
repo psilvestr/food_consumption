@@ -1,0 +1,18 @@
+ord_time=read.table("./data/instacart_2017_05_01/orders.csv", sep=",", h=T)
+ord=read.table("./data/instacart_2017_05_01/order_products__prior.csv", sep=",", h=T)
+dep=read.table("./data/instacart_2017_05_01/departments.csv", sep=",", h=T)
+ord[,5]=ord_time[match(ord[,1],ord_time[,1]),5]
+ord[,6]=ord_time[match(ord[,1],ord_time[,1]),6]
+ord[,7]=ord_time[match(ord[,1],ord_time[,1]),2]
+colnames(ord)[5:7]=c("dow","hour", "user_id")
+dat1=aggregate(ord$order_id, by=list(ord$hour), FUN=length)
+dat2=aggregate(ord$order_id, by=list(ord$dow), FUN=length)
+
+png(file = "graph1.jpg")
+plot(dat1,type = "o",col = "red", xlab = "Hour", ylab = "Number of Orders",main = "Food Order Frequency During a Day")
+dev.off()
+
+png(file = "graph2.jpg")
+plot(dat2,type = "o",col = "red", xlab = "Week Day", ylab = "Number of Orders",main = "Food Order Frequency During a Week")
+dev.off()
+ 
